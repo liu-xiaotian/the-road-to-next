@@ -10,35 +10,42 @@ import clsx from "clsx";
 import Link from "next/link";
 import { Ticket } from "../types";
 import { TICKET_ICONS } from "../constants";
+import { LucideSquareArrowOutUpRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 type TicketItemProps = {
   ticket: Ticket;
 };
 
 const TicketItem = ({ ticket }: TicketItemProps) => {
+  const detailButton = (
+    <Button>
+      <Link href={ticketPath(ticket.id)}>
+        <LucideSquareArrowOutUpRight className="h-4 w-4" />
+      </Link>
+    </Button>
+  );
   return (
-    <Card className="w-full max-w-[420px]">
-      <CardHeader>
-        <CardTitle className="flex gap-x-2">
-          <span>{TICKET_ICONS[ticket.status]}</span>
-          <span className="truncate">{ticket.title}</span>
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <span
-          className={clsx("text-sm text-slate-500 truncate", {
-            "line-through": ticket.status === "DONE",
-          })}
-        >
-          {ticket.content}
-        </span>
-      </CardContent>
-      <CardFooter>
-        <Link href={ticketPath(ticket.id)} className="text-sm underline">
-          View
-        </Link>
-      </CardFooter>
-    </Card>
+    <div className="w-full max-w-[420px] flex gap-x-1">
+      <Card className="w-full">
+        <CardHeader>
+          <CardTitle className="flex gap-x-2">
+            <span>{TICKET_ICONS[ticket.status]}</span>
+            <span className="truncate">{ticket.title}</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <span
+            className={clsx("text-sm text-slate-500 truncate", {
+              "line-through": ticket.status === "DONE",
+            })}
+          >
+            {ticket.content}
+          </span>
+        </CardContent>
+      </Card>
+      <div className="flex flex-col gap-y-1">{detailButton}</div>
+    </div>
   );
 };
 
