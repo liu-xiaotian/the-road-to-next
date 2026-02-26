@@ -1,19 +1,9 @@
-"use client";
 import { Heading } from "@/components/heading";
 import { TicketItem } from "../features/ticket/components/ticket-item";
-import { useEffect, useState } from "react";
-import { Ticket } from "../features/ticket/types";
 import { getTickets } from "../features/ticket/queries/get-tickets";
 
-const TicketsPage = () => {
-  const [tickets, setTickets] = useState<Ticket[]>([]);
-  useEffect(() => {
-    const fetchTickets = async function () {
-      const result = await getTickets();
-      setTickets(result);
-    };
-    fetchTickets();
-  }, []);
+const TicketsPage = async () => {
+  const tickets = await getTickets();
 
   return (
     <div className="flex-1 flex flex-col gap-y-8">
