@@ -10,6 +10,7 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 const DocumentIcon = () => (
   <svg
@@ -76,6 +77,7 @@ const TicketsPage = () => {
           All your tickets at one place
         </p>
       </div>
+      <Separator />
       <div className="flex-1 flex flex-col items-center gap-y-4 animate-fade-in-from-top">
         {initialTickets.map((ticket) => (
           <Card key={ticket.id} className="w-full max-w-[420px]">
