@@ -6,6 +6,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { Placeholder } from "@/components/placeholder";
 
 // export const dynamic = "force-dynamic"; 强制改为动态
+export const revalidate = 5;
 
 const TicketsPage = async () => {
   return (
