@@ -5,6 +5,8 @@ import { Spinner } from "@/components/spinner";
 import { ErrorBoundary } from "react-error-boundary";
 import { Placeholder } from "@/components/placeholder";
 
+// export const dynamic = "force-dynamic"; 强制改为动态
+
 const TicketsPage = async () => {
   return (
     <div className="flex-1 flex flex-col gap-y-8">
