@@ -9,23 +9,14 @@ import { Ticket } from "@prisma/client";
 import { deleteTicket } from "../actions/delete-ticket";
 
 type TicketItemProps = {
-  ticket: {
-    id: string;
-    title: string;
-    content: string;
-    status: Ticket["status"];
-    user: {
-      id: string;
-      name: string;
-    };
-  };
+  ticket: Ticket;
   isDetail?: boolean;
 };
 
 const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
   const detailButton = (
     <Button>
-      <Link href={ticketPath(ticket.id)}>
+      <Link prefetch href={ticketPath(ticket.id)}>
         <LucideSquareArrowOutUpRight className="h-4 w-4" />
       </Link>
     </Button>
