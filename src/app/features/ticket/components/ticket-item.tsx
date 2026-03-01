@@ -8,7 +8,16 @@ import { Button } from "@/components/ui/button";
 import { Ticket } from "@prisma/client";
 
 type TicketItemProps = {
-  ticket: Ticket;
+  ticket: {
+    id: string;
+    title: string;
+    content: string;
+    status: Ticket["status"];
+    user: {
+      id: string;
+      name: string;
+    };
+  };
   isDetail?: boolean;
 };
 
