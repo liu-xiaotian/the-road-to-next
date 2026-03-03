@@ -14,7 +14,7 @@ const upsertTickeSchema = z.object({
 
 export const upsertTicket = async (
   id: string | undefined,
-  _actionState: { message: string },
+  _actionState: { message: string; payload?: FormData },
   formData: FormData,
 ) => {
   try {
@@ -30,7 +30,7 @@ export const upsertTicket = async (
       create: data,
     });
   } catch (error) {
-    return { message: "Something went wrong" };
+    return { message: "Something went wrong", payload: formData };
   }
 
   // await prisma.ticket.update({
