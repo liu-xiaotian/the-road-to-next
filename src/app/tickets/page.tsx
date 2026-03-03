@@ -4,8 +4,8 @@ import { TicketList } from "../features/ticket/components/ticket-list";
 import { Spinner } from "@/components/spinner";
 import { ErrorBoundary } from "react-error-boundary";
 import { Placeholder } from "@/components/placeholder";
-import { TicketCreateForm } from "../features/ticket/components/ticket-create-form";
 import { CardCompact } from "@/components/card-compact";
+import { TicketUpsertForm } from "../features/ticket/components/ticket-upsert-form";
 
 // export const dynamic = "force-dynamic"; 强制改为动态
 export const revalidate = 5;
@@ -21,7 +21,7 @@ const TicketsPage = async () => {
         title="Create Ticket"
         description="A new Ticket will be created"
         className="w-full max-w-[420px] self-center"
-        content={<TicketCreateForm />}
+        content={<TicketUpsertForm />}
       />
       <ErrorBoundary fallback={<Placeholder label="Something went wrong!" />}>
         <Suspense fallback={<Spinner />}>
