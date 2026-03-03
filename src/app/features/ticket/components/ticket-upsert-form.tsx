@@ -5,17 +5,21 @@ import { Textarea } from "@/components/ui/textarea";
 import { upsertTicket } from "../actions/upsert-ticket";
 import { Ticket } from "@prisma/client";
 import { SubmitButton } from "@/components/form/submit-button";
+import { useActionState } from "react";
 
 type TicketUpsertFormProps = {
   ticket?: Ticket;
 };
 
 const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
+  const [actionState, action] = useActionState(
+    upsertTicket.bind(null, ticket?.id),
+    {
+      message: "",
+    },
+  );
   return (
-    <form
-      action={upsertTicket.bind(null, ticket?.id)}
-      className="flex flex-col gap-y-2"
-    >
+    <form action={action} className="flex flex-col gap-y-2">
       {/* <Input name="id" type="hidden" defaultValue={ticket.id} /> */}
       <Label htmlFor="title">Title</Label>
       <Input id="title" name="title" type="text" defaultValue={ticket?.title} />
@@ -23,6 +27,8 @@ const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
       <Label htmlFor="content">Content</Label>
       <Textarea id="content" name="content" defaultValue={ticket?.content} />
       <SubmitButton label={ticket ? "Edit" : "Create"} />
+
+      {actionState.message}
     </form>
   );
 };
