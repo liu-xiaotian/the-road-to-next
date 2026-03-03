@@ -68,8 +68,8 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
       <div className="flex flex-col gap-y-1">
         {isDetail ? (
           <>
-            {detailButton}
             {editButton}
+            {deleteButton}
           </>
         ) : (
           <>

@@ -1,6 +1,7 @@
 import { TicketItem } from "@/app/features/ticket/components/ticket-item";
 import { getTicket } from "@/app/features/ticket/queries/get-ticket";
 import { Placeholder } from "@/components/placeholder";
+import { RedirectToast } from "@/components/redirect-toast";
 import { Button } from "@/components/ui/button";
 import { ticketsPath } from "@/paths";
 import Link from "next/link";
@@ -19,9 +20,13 @@ const TicketPage = async ({ params }: TicketPageProps) => {
     notFound();
   }
   return (
-    <div className="flex justify-center animate-fade-in-from-top">
-      <TicketItem ticket={ticket} isDetail />
-    </div>
+    <>
+    
+      <div className="flex justify-center animate-fade-in-from-top">
+        <TicketItem ticket={ticket} isDetail />
+      </div>
+      <RedirectToast />
+    </>
   );
 };
 

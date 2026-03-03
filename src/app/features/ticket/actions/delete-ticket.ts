@@ -1,6 +1,6 @@
 "use server";
 
-import { setCookieByKey } from "@/app/actions/cookies";
+import { setCookieByKey } from "@/actions/cookies";
 import prisma from "@/lib/prisma";
 import { ticketsPath } from "@/paths";
 import { revalidatePath } from "next/cache";

@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 
-export const setCookieByKey = async (key: string, value: string) => {
+export const setCookieByKey =  async (key: string, value: string) => {
   (await cookies()).set(key, value);
 };
 
