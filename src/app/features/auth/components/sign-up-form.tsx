@@ -12,21 +12,31 @@ const SignUpForm = () => {
 
   return (
     <Form action={action} actionState={actionState}>
-      <Input name="username" placeholder="Enter your Username" />
+      <Input
+        name="username"
+        placeholder="Enter your Username"
+        defaultValue={actionState.payload?.get("username") as string}
+      />
       <FieldErrors actionState={actionState} name="username" />
-      <Input name="email" placeholder="Enter your Email" />
+      <Input
+        name="email"
+        placeholder="Enter your Email"
+        defaultValue={actionState.payload?.get("email") as string}
+      />
       <FieldErrors actionState={actionState} name="email" />
 
       <Input
         name="password"
         placeholder="Enter your Password"
         type="password"
+        defaultValue={actionState.payload?.get("password") as string}
       />
       <FieldErrors actionState={actionState} name="password" />
       <Input
         name="confirmPassword"
         placeholder="Confirm your Password"
         type="password"
+        defaultValue={actionState.payload?.get("confirmPassword") as string}
       />
       <FieldErrors actionState={actionState} name="confirmPassword" />
       <SubmitButton label="Sign Up" />

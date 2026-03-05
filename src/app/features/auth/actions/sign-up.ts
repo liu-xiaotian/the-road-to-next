@@ -9,6 +9,7 @@ import prisma from "@/lib/prisma";
 import { cookies } from "next/headers";
 import { z } from "zod";
 import { hash } from "@node-rs/argon2";
+import { Prisma } from "@prisma/client";
 
 const signUpSchema = z
   .object({
@@ -56,6 +57,17 @@ export const signUp = async (_actionState: ActionState, formData: FormData) => {
       sessionCookie.attributes,
     );
   } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      return toActionState(
+        "ERROR",
+        "Email or username already exists",
+        formData,
+      );
+    }
+
     return fromErrorToActionState(error, formData);
   }
 
