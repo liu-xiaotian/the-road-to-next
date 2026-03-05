@@ -1,9 +1,16 @@
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { ticketEditPath, ticketPath } from "@/paths";
 import clsx from "clsx";
 import Link from "next/link";
 import { TICKET_ICONS } from "../constants";
 import {
+  LucideMoreHorizontal,
   LucidePencil,
   LucideSquareArrowOutUpRight,
   LucideTrash,
@@ -12,6 +19,7 @@ import { Button } from "@/components/ui/button";
 import { Ticket } from "@prisma/client";
 import { deleteTicket } from "../actions/delete-ticket";
 import { toCurrencyFormCent } from "@/utils/currency";
+import { TicketMoreMenu } from "./ticket-more-menu";
 
 type TicketItemProps = {
   ticket: Ticket;
@@ -42,6 +50,18 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
       </Button>
     </form>
   );
+
+  const moreMenu = (
+    <TicketMoreMenu
+      ticket={ticket}
+      trigger={
+        <Button variant="outline">
+          <LucideMoreHorizontal className="h-4 w-4" />
+        </Button>
+      }
+    />
+  );
+
   return (
     <div
       className={clsx("w-full flex gap-x-1", {
@@ -67,7 +87,9 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
         </CardContent>
         <CardFooter className="flex justify-between">
           <p className="text-sm text-muted-foreground">{ticket.deadline}</p>
-          <p className="text-sm text-muted-foreground">{toCurrencyFormCent(ticket.bounty)}</p>
+          <p className="text-sm text-muted-foreground">
+            {toCurrencyFormCent(ticket.bounty)}
+          </p>
         </CardFooter>
       </Card>
       <div className="flex flex-col gap-y-1">
@@ -80,6 +102,7 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
           <>
             {detailButton}
             {editButton}
+            {moreMenu}
           </>
         )}
       </div>

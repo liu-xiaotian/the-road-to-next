@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { upsertTicket } from "../actions/upsert-ticket";
 import { Ticket } from "@prisma/client";
 import { SubmitButton } from "@/components/form/submit-button";
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useRef } from "react";
 import { FieldErrors } from "@/components/form/field-error";
 import { EMPTY_ACTION_STATE } from "@/components/form/utils/to-action-state";
 import { useActionFeedback } from "@/components/form/hooks/use-action-feedback";
@@ -24,8 +24,9 @@ const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
     EMPTY_ACTION_STATE,
   );
 
+  const datePickerImperativeHandleRef = useRef<{ reset: () => void }>(null);
   const handleSuccess = () => {
-    console.log("success");
+    datePickerImperativeHandleRef.current?.reset();
   };
   return (
     <Form action={action} actionState={actionState} onSuccess={handleSuccess}>
@@ -63,6 +64,7 @@ const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
               (actionState.payload?.get("deadline") as string) ??
               ticket?.deadline
             }
+            imperativeHandleRef={datePickerImperativeHandleRef}
           />
           <FieldErrors actionState={actionState} name="deadline" />
         </div>
