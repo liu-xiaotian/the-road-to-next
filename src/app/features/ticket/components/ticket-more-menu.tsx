@@ -13,18 +13,23 @@ import { LucideTrash } from "lucide-react";
 import { TICKET_STATUS_LABELS } from "../constants";
 import { updateTicketStatus } from "../actions/update-ticket-status";
 import { toast } from "sonner";
+import { useConfirmDialog } from "@/components/confirm-dialog";
+import { deleteTicket } from "../actions/delete-ticket";
 
 type TicketMoreMenuProps = {
   ticket: Ticket;
   trigger: React.ReactNode;
 };
 const TicketMoreMenu = ({ ticket, trigger }: TicketMoreMenuProps) => {
-  const deleteButton = (
-    <DropdownMenuItem>
-      <LucideTrash className="mr-2 w-4 h-4" />
-      <span>Delete</span>
-    </DropdownMenuItem>
-  );
+  const [deleteButton, deleteDialog] = useConfirmDialog({
+    action: deleteTicket.bind(null, ticket.id),
+    trigger: (
+      <DropdownMenuItem>
+        <LucideTrash className="mr-2 w-4 h-4" />
+        <span>Delete</span>
+      </DropdownMenuItem>
+    ),
+  });
   const handleUpdateTicketStatus = async (value: string) => {
     const promise = updateTicketStatus(ticket.id, value as TicketStatus);
     toast.promise(promise, {
@@ -52,14 +57,17 @@ const TicketMoreMenu = ({ ticket, trigger }: TicketMoreMenuProps) => {
   );
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>{trigger}</DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56" side="right">
-        {ticketStatusItems}
-        <DropdownMenuSeparator />
-        {deleteButton}
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <>
+      {deleteDialog}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>{trigger}</DropdownMenuTrigger>
+        <DropdownMenuContent className="w-56" side="right">
+          {ticketStatusItems}
+          <DropdownMenuSeparator />
+          {deleteButton}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </>
   );
 };
 
