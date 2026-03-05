@@ -8,17 +8,14 @@ import { signOut } from "@/app/features/auth/actions/sign-out";
 import { SubmitButton } from "./form/submit-button";
 import { getAuth } from "@/app/features/auth/queries/get-auth";
 import { useEffect, useState } from "react";
-import { User as AuthUser } from "lucia";
+import { usePathname } from "next/navigation";
+import { useAuth } from "@/app/features/auth/hooks/use-auth";
 const Header = () => {
-  const [user, setUser] = useState<AuthUser | null>(null);
+  const { user, isFetching } = useAuth();
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const { user } = await getAuth();
-      setUser(user);
-    };
-    fetchUser();
-  }, []);
+  if (isFetching) {
+    return null;
+  }
   const navItems = user ? (
     <>
       <Link
@@ -50,6 +47,7 @@ const Header = () => {
   return (
     <nav
       className="
+          animate-header-from-top
           supports-backdrop-blur:bg-background/60
           flxed left-0 right-0 top-0 z-20
           border-b bg-background/95 backdrop-blur
