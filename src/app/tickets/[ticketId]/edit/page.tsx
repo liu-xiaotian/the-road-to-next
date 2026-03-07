@@ -1,3 +1,5 @@
+import { getAuth } from "@/app/features/auth/queries/get-auth";
+import { isOwner } from "@/app/features/auth/utils/isowner";
 import { TicketUpsertForm } from "@/app/features/ticket/components/ticket-upsert-form";
 import { getTicket } from "@/app/features/ticket/queries/get-ticket";
 import { CardCompact } from "@/components/card-compact";
@@ -14,7 +16,12 @@ const TicketEditPage = async ({ params }: TicketEditPageProps) => {
   // 现在 ticketId 是正常的字符串了
   const ticket = await getTicket(ticketId);
 
-  if (!ticket) {
+  const { user } = await getAuth();
+
+  const isTicketFound = !!ticket;
+  const isTicketOwner = isOwner(user, ticket);
+
+  if (!isTicketFound || !isTicketOwner) {
     notFound();
   }
 
