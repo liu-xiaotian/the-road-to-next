@@ -2,7 +2,10 @@ import { getAuth } from "@/app/features/auth/queries/get-auth";
 import { isOwner } from "@/app/features/auth/utils/isowner";
 import { TicketUpsertForm } from "@/app/features/ticket/components/ticket-upsert-form";
 import { getTicket } from "@/app/features/ticket/queries/get-ticket";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { CardCompact } from "@/components/card-compact";
+import { Separator } from "@/components/ui/separator";
+import { homePath, ticketPath } from "@/paths";
 import { notFound } from "next/navigation";
 
 // 1. 类型定义也要更新，表明 params 是一个 Promise
@@ -26,7 +29,15 @@ const TicketEditPage = async ({ params }: TicketEditPageProps) => {
   }
 
   return (
-    <>
+    <div className="flex-1 flex flex-col gap-y-8">
+      <Breadcrumbs
+        breadcrumbs={[
+          { title: "Tickets", href: homePath() },
+          { title: ticket.title, href: ticketPath(ticket.id) },
+          { title: "Edit" },
+        ]}
+      />
+      <Separator />
       <div className="flex flex-1 flex-col justify-center items-center">
         <CardCompact
           title="Edit Ticket"
@@ -35,7 +46,7 @@ const TicketEditPage = async ({ params }: TicketEditPageProps) => {
           content={<TicketUpsertForm ticket={ticket} />}
         />
       </div>
-    </>
+    </div>
   );
 };
 
