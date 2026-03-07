@@ -7,18 +7,19 @@ import {
   toActionState,
 } from "@/components/form/utils/to-action-state";
 import prisma from "@/lib/prisma";
-import { ticketPath, ticketsPath } from "@/paths";
+import { signInPath, ticketPath, ticketsPath } from "@/paths";
 import { toCent } from "@/utils/currency";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { title } from "process";
 import { z } from "zod";
+import { getAuth } from "../../auth/queries/get-auth";
 
 const upsertTickeSchema = z.object({
   title: z.string().min(1).max(191),
   content: z.string().min(1).max(1024),
-  deadline: z.string().regex(/^\d{4}-\d{2}-\d{2}$/,"Is required"),
-  bounty: z.coerce.number().positive()
+  deadline: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Is required"),
+  bounty: z.coerce.number().positive(),
 });
 
 export const upsertTicket = async (
@@ -26,6 +27,11 @@ export const upsertTicket = async (
   _actionState: ActionState,
   formData: FormData,
 ) => {
+  const { user } = await getAuth();
+  if (!user) {
+    redirect(signInPath());
+  }
+
   try {
     const data = upsertTickeSchema.parse({
       // id: formData.get("id"),
@@ -37,8 +43,9 @@ export const upsertTicket = async (
 
     const dbData = {
       ...data,
-      bounty:  toCent(data.bounty),
-    }
+      userId: user.id,
+      bounty: toCent(data.bounty),
+    };
 
     await prisma.ticket.upsert({
       where: { id: id || "" },
