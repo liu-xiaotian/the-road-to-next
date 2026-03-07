@@ -14,6 +14,8 @@ import { redirect } from "next/navigation";
 import { title } from "process";
 import { z } from "zod";
 import { getAuth } from "../../auth/queries/get-auth";
+import { getAuthOrRedirect } from "../../auth/queries/get-auth-or-redirect";
+import { isOwner } from "../../auth/utils/isowner";
 
 const upsertTickeSchema = z.object({
   title: z.string().min(1).max(191),
@@ -27,12 +29,20 @@ export const upsertTicket = async (
   _actionState: ActionState,
   formData: FormData,
 ) => {
-  const { user } = await getAuth();
-  if (!user) {
-    redirect(signInPath());
-  }
+  const { user } = await getAuthOrRedirect();
 
   try {
+    if (!id) {
+      const ticket = await prisma.ticket.findUnique({
+        where: {
+          id,
+        },
+      });
+      if (!ticket || !isOwner(user, ticket)) {
+        return toActionState("ERROR", "Ticket not found");
+      }
+    }
+
     const data = upsertTickeSchema.parse({
       // id: formData.get("id"),
       title: formData.get("title"),
