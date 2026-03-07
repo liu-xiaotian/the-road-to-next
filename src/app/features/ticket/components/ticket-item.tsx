@@ -20,6 +20,8 @@ import { Prisma, Ticket } from "@prisma/client";
 import { deleteTicket } from "../actions/delete-ticket";
 import { toCurrencyFormCent } from "@/utils/currency";
 import { TicketMoreMenu } from "./ticket-more-menu";
+import { getAuth } from "../../auth/queries/get-auth";
+import { isOwner } from "../../auth/utils/isowner";
 
 type TicketItemProps = {
   ticket: Prisma.TicketGetPayload<{
@@ -34,7 +36,9 @@ type TicketItemProps = {
   isDetail?: boolean;
 };
 
-const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
+const TicketItem = async ({ ticket, isDetail }: TicketItemProps) => {
+  const { user } = await getAuth();
+  const isTicketOwner = isOwner(user, ticket);
   const detailButton = (
     <Button>
       <Link prefetch href={ticketPath(ticket.id)}>
@@ -43,15 +47,15 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
     </Button>
   );
 
-  const editButton = (
+  const editButton = isTicketOwner ? (
     <Button>
       <Link prefetch href={ticketEditPath(ticket.id)}>
         <LucidePencil />
       </Link>
     </Button>
-  );
+  ) : null;
 
-  const moreMenu = (
+  const moreMenu = isTicketOwner ? (
     <TicketMoreMenu
       ticket={ticket}
       trigger={
@@ -60,7 +64,7 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
         </Button>
       }
     />
-  );
+  ) : null;
 
   return (
     <div
