@@ -22,12 +22,21 @@
     transform: translateY(0);
   }
 }
+@keyframes sidebar-from-left {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --animate-sidebar-from-left: sidebar-from-left 0.5s ease-out;
   --animate-fade-in-from-top: fade-in-from-top 0.5s ease-out;
   --animate-header-from-top: header-from-top 0.5s ease-out;
   --color-sidebar-ring: var(--sidebar-ring);

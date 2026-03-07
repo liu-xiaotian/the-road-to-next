@@ -3,8 +3,10 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { navItems } from "../constants";
 import { SidebarItem } from "./sidebar-item";
+import { useAuth } from "@/app/features/auth/hooks/use-auth";
 
 const Sidebar = () => {
+  const { user, isFetching } = useAuth();
   const [isTransition, setTransition] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -15,10 +17,16 @@ const Sidebar = () => {
       setTransition(false);
     }, 300);
   };
+  console.log(user, isFetching);
+
+  if (!user) {
+    return <div className="w-[78px] bg-secondary/20"></div>;
+  }
 
   return (
     <nav
       className={cn(
+        "animate-sidebar-from-left",
         "h-screen border-r pt-24",
         isTransition && "duration-200",
         isOpen ? "md:w-60 w-[78px]" : "w-[78px]",
